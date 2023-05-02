@@ -53,10 +53,10 @@ func (c *Writer) Write(_, val string) error {
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("Authorization", "Basic "+c.zoAuth)
 	resp, err := c.client.Do(req)
-	defer resp.Body.Close()
 	if err != nil {
 		return fmt.Errorf("fail to send request to ZincObserve: %w", err)
 	}
+	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
 		return fmt.Errorf("http status code is not 200: %d", resp.StatusCode)
