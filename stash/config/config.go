@@ -25,6 +25,16 @@ type (
 		Password      string `json:",optional"`
 	}
 
+	ZincObserveConf struct {
+		Schema        string
+		Host          string
+		Username      string
+		Password      string
+		Organization  string `json:",default=default"`
+		Stream        string `json:",default=default"`
+		IngestionType string `json:",default=_json,options=_json|_bulk|_multi"`
+	}
+
 	Filter struct {
 		Action     string      `json:",options=drop|remove_field|transfer"`
 		Conditions []Condition `json:",optional"`
@@ -54,7 +64,8 @@ type (
 		}
 		Filters []Filter `json:",optional"`
 		Output  struct {
-			ElasticSearch ElasticSearchConf
+			ElasticSearch ElasticSearchConf `json:",optional"`
+			ZincObserve   ZincObserveConf   `json:",optional"`
 		}
 	}
 
