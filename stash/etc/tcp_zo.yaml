@@ -34,6 +34,7 @@ Clusters:
     Output:
       ZincObserve:
         Schema: http
-        Host: 127.0.0.1:5080
+        Host: 127.0.0.1
+        Port: 5080
         Username: admin@m4n5ter.email
         Password: "123456"
