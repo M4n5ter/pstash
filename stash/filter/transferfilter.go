@@ -5,7 +5,7 @@ import (
 )
 
 func TransferFilter(field, target string) FilterFunc {
-	return func(m map[string]interface{}) map[string]interface{} {
+	return func(m map[string]any) map[string]any {
 		val, ok := m[field]
 		if !ok {
 			return m
@@ -16,7 +16,7 @@ func TransferFilter(field, target string) FilterFunc {
 			return m
 		}
 
-		var nm map[string]interface{}
+		var nm map[string]any
 		if err := jsoniter.Unmarshal([]byte(s), &nm); err != nil {
 			return m
 		}

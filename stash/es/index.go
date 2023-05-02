@@ -31,7 +31,7 @@ const (
 )
 
 type (
-	IndexFormat func(m map[string]interface{}) string
+	IndexFormat func(m map[string]any) string
 	IndexFunc   func() string
 
 	Index struct {
@@ -52,7 +52,7 @@ func NewIndex(client *elastic.Client, indexFormat string, loc *time.Location) *I
 	}
 }
 
-func (idx *Index) GetIndex(m map[string]interface{}) string {
+func (idx *Index) GetIndex(m map[string]any) string {
 	index := idx.indexFormat(m)
 	idx.lock.RLock()
 	if _, ok := idx.indices[index]; ok {
@@ -68,7 +68,7 @@ func (idx *Index) GetIndex(m map[string]interface{}) string {
 }
 
 func (idx *Index) ensureIndex(index string) error {
-	_, err := idx.singleFlight.Do(index, func() (i interface{}, err error) {
+	_, err := idx.singleFlight.Do(index, func() (i any, err error) {
 		idx.lock.Lock()
 		defer idx.lock.Unlock()
 
@@ -106,16 +106,16 @@ func (idx *Index) ensureIndex(index string) error {
 	return err
 }
 
-func buildIndexFormatter(indexFormat string, loc *time.Location) func(map[string]interface{}) string {
+func buildIndexFormatter(indexFormat string, loc *time.Location) func(map[string]any) string {
 	format, attrs, timePos := getFormat(indexFormat)
 	if len(attrs) == 0 {
-		return func(m map[string]interface{}) string {
+		return func(m map[string]any) string {
 			return format
 		}
 	}
 
-	return func(m map[string]interface{}) string {
-		var vals []interface{}
+	return func(m map[string]any) string {
+		var vals []any
 		for i, attr := range attrs {
 			if i == timePos {
 				vals = append(vals, formatTime(attr, getTime(m).In(loc)))
@@ -136,7 +136,7 @@ func formatTime(format string, t time.Time) string {
 	return jodaTime.Format(format, t)
 }
 
-func getTime(m map[string]interface{}) time.Time {
+func getTime(m map[string]any) time.Time {
 	if ti, ok := m[timestampKey]; ok {
 		if ts, ok := ti.(string); ok {
 			if t, err := time.Parse(timestampFormat, ts); err == nil {

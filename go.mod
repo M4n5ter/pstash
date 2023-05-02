@@ -1,6 +1,6 @@
 module github.com/m4n5ter/pstash
 
-go 1.17
+go 1.20
 
 require (
 	github.com/json-iterator/go v1.1.12

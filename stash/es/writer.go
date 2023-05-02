@@ -48,7 +48,7 @@ func (w *Writer) Write(index, val string) error {
 	}, len(val))
 }
 
-func (w *Writer) execute(vals []interface{}) {
+func (w *Writer) execute(vals []any) {
 	var bulk = w.client.Bulk()
 	for _, val := range vals {
 		pair := val.(valueWithIndex)

@@ -12,7 +12,7 @@ const (
 	typeMatch          = "match"
 )
 
-type FilterFunc func(map[string]interface{}) map[string]interface{}
+type FilterFunc func(map[string]any) map[string]any
 
 func CreateFilters(p config.Cluster) []FilterFunc {
 	var filters []FilterFunc

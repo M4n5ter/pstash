@@ -9,72 +9,72 @@ import (
 func TestTransferFilter(t *testing.T) {
 	tests := []struct {
 		name   string
-		input  map[string]interface{}
+		input  map[string]any
 		field  string
 		target string
-		expect map[string]interface{}
+		expect map[string]any
 	}{
 		{
 			name: "with target",
-			input: map[string]interface{}{
+			input: map[string]any{
 				"a": "aa",
 				"b": `{"c":"cc"}`,
 			},
 			field:  "b",
 			target: "data",
-			expect: map[string]interface{}{
+			expect: map[string]any{
 				"a": "aa",
-				"data": map[string]interface{}{
+				"data": map[string]any{
 					"c": "cc",
 				},
 			},
 		},
 		{
 			name: "without target",
-			input: map[string]interface{}{
+			input: map[string]any{
 				"a": "aa",
 				"b": `{"c":"cc"}`,
 			},
 			field: "b",
-			expect: map[string]interface{}{
+			expect: map[string]any{
 				"a": "aa",
 				"c": "cc",
 			},
 		},
 		{
 			name: "without field",
-			input: map[string]interface{}{
+			input: map[string]any{
 				"a": "aa",
 				"b": `{"c":"cc"}`,
 			},
 			field: "c",
-			expect: map[string]interface{}{
+			expect: map[string]any{
 				"a": "aa",
 				"b": `{"c":"cc"}`,
 			},
 		},
 		{
 			name: "with not json",
-			input: map[string]interface{}{
+			input: map[string]any{
 				"a": "aa",
 				"b": `{"c":"cc"`,
 			},
 			field: "b",
-			expect: map[string]interface{}{
+			expect: map[string]any{
 				"a": "aa",
 				"b": `{"c":"cc"`,
 			},
 		},
 		{
 			name: "with not string",
-			input: map[string]interface{}{
+			input: map[string]any{
 				"a": "aa",
-				"b": map[string]interface{}{"c": "cc"},
+				"b": map[string]any{"c": "cc"},
 			},
 			field: "b",
-			expect: map[string]interface{}{
+			expect: map[string]any{
 				"a": "aa",
-				"b": map[string]interface{}{"c": "cc"},
+				"b": map[string]any{"c": "cc"},
 			},
 		},
 	}

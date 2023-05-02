@@ -7,7 +7,7 @@ import (
 )
 
 func DropFilter(conds []config.Condition) FilterFunc {
-	return func(m map[string]interface{}) map[string]interface{} {
+	return func(m map[string]any) map[string]any {
 		var qualify bool
 		for _, cond := range conds {
 			var qualifyOnce bool

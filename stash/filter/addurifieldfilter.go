@@ -6,7 +6,7 @@ import (
 )
 
 func AddUriFieldFilter(inField, outField string) FilterFunc {
-	return func(m map[string]interface{}) map[string]interface{} {
+	return func(m map[string]any) map[string]any {
 		if val, ok := m[inField].(string); ok {
 			var datas []string
 			idx := strings.Index(val, "?")

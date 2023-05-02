@@ -2,7 +2,6 @@ package tcpinput
 
 import (
 	"bufio"
-	"fmt"
 	"github.com/m4n5ter/pstash/stash/config"
 	"github.com/m4n5ter/pstash/stash/handler"
 	"github.com/zeromicro/go-zero/core/logx"
@@ -23,7 +22,6 @@ func NewTcpInput(c config.TcpInputConf, handler *handler.MessageHandler) *TcpInp
 	if e != nil {
 		panic(e)
 	}
-	fmt.Println("Start listening on " + c.IP + ":" + strconv.Itoa(c.Port))
 	return &TcpInput{
 		listener: l,
 		exit:     make(chan struct{}),
@@ -57,7 +55,6 @@ func (ti *TcpInput) Start() {
 				if err != nil {
 					break
 				}
-				fmt.Println("Recv:" + line)
 				err = ti.handler.Consume("", line)
 				if err != nil {
 					logx.Errorf("consume error: %v", err)

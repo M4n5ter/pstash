@@ -13,7 +13,7 @@ func TestBuildIndexFormatter(t *testing.T) {
 	tests := []struct {
 		name   string
 		val    string
-		attrs  map[string]interface{}
+		attrs  map[string]any
 		expect string
 	}{
 		{
@@ -29,7 +29,7 @@ func TestBuildIndexFormatter(t *testing.T) {
 		{
 			name: "attr without time",
 			val:  "{.event}",
-			attrs: map[string]interface{}{
+			attrs: map[string]any{
 				"event": "foo",
 			},
 			expect: "foo",
@@ -37,7 +37,7 @@ func TestBuildIndexFormatter(t *testing.T) {
 		{
 			name: "attr with time",
 			val:  "{.event}-{{yyyy/MM/dd}}",
-			attrs: map[string]interface{}{
+			attrs: map[string]any{
 				"event":      "foo",
 				timestampKey: testTime,
 			},
@@ -46,7 +46,7 @@ func TestBuildIndexFormatter(t *testing.T) {
 		{
 			name: "attr with time, with missing",
 			val:  "{.event}-{.foo}-{{yyyy/MM/dd}}",
-			attrs: map[string]interface{}{
+			attrs: map[string]any{
 				"event":      "foo",
 				timestampKey: testTime,
 			},
@@ -55,7 +55,7 @@ func TestBuildIndexFormatter(t *testing.T) {
 		{
 			name: "attr with time, leading alphas",
 			val:  "{the.event}-{{yyyy/MM/dd}}",
-			attrs: map[string]interface{}{
+			attrs: map[string]any{
 				"event":      "foo",
 				timestampKey: testTime,
 			},

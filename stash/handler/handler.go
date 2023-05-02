@@ -27,7 +27,7 @@ func (mh *MessageHandler) AddFilters(filters ...filter.FilterFunc) {
 }
 
 func (mh *MessageHandler) Consume(_, val string) error {
-	var m map[string]interface{}
+	var m map[string]any
 	var index string
 	if err := json.Unmarshal([]byte(val), &m); err != nil {
 		return err
