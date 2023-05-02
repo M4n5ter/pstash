@@ -19,6 +19,10 @@ jobs:
             goos: darwin
     steps:
     - uses: actions/checkout@v3
+    - uses: softprops/action-gh-release@v1
+      with:
+        name: "Release ${{ github.ref_name }}"
+        generate_release_notes: true
     - uses: zeromicro/go-zero-release-action@master
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -27,8 +31,3 @@ jobs:
         goversion: "https://dl.google.com/go/go1.20.3.linux-amd64.tar.gz"
         project_path: "./stash"
         binary_name: "stash"
-
-    - uses: softprops/action-gh-release@v1
-      with:
-        name: "Release ${{ github.ref_name }}"
-        generate_release_notes: true
