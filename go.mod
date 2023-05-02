@@ -1,4 +1,4 @@
-module github.com/kevwan/go-stash
+module github.com/m4n5ter/pstash
 
 go 1.17
 

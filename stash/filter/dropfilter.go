@@ -3,7 +3,7 @@ package filter
 import (
 	"strings"
 
-	"github.com/kevwan/go-stash/stash/config"
+	"github.com/m4n5ter/pstash/stash/config"
 )
 
 func DropFilter(conds []config.Condition) FilterFunc {

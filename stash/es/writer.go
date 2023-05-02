@@ -3,7 +3,7 @@ package es
 import (
 	"context"
 
-	"github.com/kevwan/go-stash/stash/config"
+	"github.com/m4n5ter/pstash/stash/config"
 	"github.com/olivere/elastic/v7"
 	"github.com/zeromicro/go-zero/core/executors"
 	"github.com/zeromicro/go-zero/core/logx"
@@ -27,7 +27,7 @@ func NewWriter(c config.ElasticSearchConf) (*Writer, error) {
 		elastic.SetSniff(false),
 		elastic.SetURL(c.Hosts...),
 		elastic.SetGzip(c.Compress),
-		elastic.SetBasicAuth(c.Username,c.Password),
+		elastic.SetBasicAuth(c.Username, c.Password),
 	)
 	if err != nil {
 		return nil, err
@@ -54,7 +54,7 @@ func (w *Writer) execute(vals []interface{}) {
 		pair := val.(valueWithIndex)
 		req := elastic.NewBulkIndexRequest().Index(pair.index)
 		if len(w.docType) > 0 {
-		    req = req.Type(w.docType)
+			req = req.Type(w.docType)
 		}
 		req = req.Doc(pair.val)
 		bulk.Add(req)
