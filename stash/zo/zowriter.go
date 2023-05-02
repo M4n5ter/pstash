@@ -1,6 +1,7 @@
 package zo
 
 import (
+	"encoding/base64"
 	"fmt"
 	json "github.com/json-iterator/go"
 	"github.com/m4n5ter/pstash/stash/config"
@@ -12,6 +13,7 @@ import (
 type Writer struct {
 	client http.Client
 	zoUrl  string
+	zoAuth string
 	// 最近一次的响应
 	LastResp ZOResp
 }
@@ -26,12 +28,17 @@ type ZOResp struct {
 }
 
 func NewWriter(conf config.ZincObserveConf) *Writer {
-	zoUrl := fmt.Sprintf("%s://%s:%s@%s/%s/%s/%s",
-		conf.Schema, conf.Username, conf.Password, conf.Host, conf.Organization, conf.Stream, conf.IngestionType)
+	if conf.Host == "" {
+		return nil
+	}
+
+	zoUrl := fmt.Sprintf("%s://%s/api/%s/%s/%s",
+		conf.Schema, conf.Host, conf.Organization, conf.Stream, conf.IngestionType)
 
 	return &Writer{
 		client:   http.Client{},
 		zoUrl:    zoUrl,
+		zoAuth:   base64.StdEncoding.EncodeToString([]byte(conf.Username + ":" + conf.Password)),
 		LastResp: ZOResp{},
 	}
 }
@@ -42,6 +49,9 @@ func (c *Writer) Write(_, val string) error {
 	if err != nil {
 		return fmt.Errorf("fail to create request: %w", err)
 	}
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", "Basic "+c.zoAuth)
 	resp, err := c.client.Do(req)
 	defer resp.Body.Close()
 	if err != nil {
