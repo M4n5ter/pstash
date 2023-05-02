@@ -32,8 +32,8 @@ func NewWriter(conf config.ZincObserveConf) *Writer {
 		return nil
 	}
 
-	zoUrl := fmt.Sprintf("%s://%s/api/%s/%s/%s",
-		conf.Schema, conf.Host, conf.Organization, conf.Stream, conf.IngestionType)
+	zoUrl := fmt.Sprintf("%s://%s:%d/api/%s/%s/%s",
+		conf.Schema, conf.Host, conf.Port, conf.Organization, conf.Stream, conf.IngestionType)
 
 	return &Writer{
 		client:   http.Client{},

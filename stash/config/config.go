@@ -28,6 +28,7 @@ type (
 	ZincObserveConf struct {
 		Schema        string
 		Host          string
+		Port          int
 		Username      string
 		Password      string
 		Organization  string `json:",default=default"`
