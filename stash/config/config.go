@@ -32,7 +32,7 @@ type (
 		Password      string
 		Organization  string `json:",default=default"`
 		Stream        string `json:",default=default"`
-		IngestionType string `json:",default=_json,options=_json|_bulk|_multi"`
+		IngestionType string `json:",default=_multi,options=_json|_bulk|_multi"`
 	}
 
 	Filter struct {
@@ -58,9 +58,17 @@ type (
 		Password   string `json:",optional"`
 	}
 
+	TcpInputConf struct {
+		IP   string `json:",default=0.0.0.0"`
+		Port int    `json:",default=17171"`
+		// milliseconds
+		Timeout int `json:",default=10000"`
+	}
+
 	Cluster struct {
 		Input struct {
-			Kafka KafkaConf
+			Kafka KafkaConf    `json:",optional"`
+			Tcp   TcpInputConf `json:",optional"`
 		}
 		Filters []Filter `json:",optional"`
 		Output  struct {

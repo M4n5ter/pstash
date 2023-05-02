@@ -2,14 +2,12 @@ package main
 
 import (
 	"flag"
-	"github.com/m4n5ter/pstash/stash/zo"
-	"time"
-
 	"github.com/m4n5ter/pstash/stash/config"
 	"github.com/m4n5ter/pstash/stash/es"
 	"github.com/m4n5ter/pstash/stash/filter"
 	"github.com/m4n5ter/pstash/stash/handler"
-	"github.com/olivere/elastic/v7"
+	"github.com/m4n5ter/pstash/stash/tcpinput"
+	"github.com/m4n5ter/pstash/stash/zo"
 	"github.com/zeromicro/go-queue/kq"
 	"github.com/zeromicro/go-zero/core/conf"
 	"github.com/zeromicro/go-zero/core/logx"
@@ -48,48 +46,32 @@ func main() {
 	var c config.Config
 	conf.MustLoad(*configFile, &c)
 	proc.SetTimeToForceQuit(c.GracePeriod)
+	logx.DisableStat()
 
 	group := service.NewServiceGroup()
 	defer group.Stop()
 
 	for _, processor := range c.Clusters {
-		ew, indexer := getWriterIndexerFromESConf(processor.Output.ElasticSearch)
+		ew, indexer := es.GetWriterIndexerFromESConf(processor.Output.ElasticSearch)
 		zw := zo.NewWriter(processor.Output.ZincObserve)
+		if ew == nil && zw == nil {
+			panic("no output")
+		}
+
 		filters := filter.CreateFilters(processor)
 		handle := handler.NewHandler(&handler.Writer{ESWriter: ew, ZOWriter: zw}, indexer)
 		handle.AddFilters(filters...)
 		handle.AddFilters(filter.AddUriFieldFilter("url", "uri"))
-		for _, k := range toKqConf(processor.Input.Kafka) {
-			group.Add(kq.MustNewQueue(k, handle))
+
+		if processor.Input.Kafka.Brokers != nil {
+			for _, k := range toKqConf(processor.Input.Kafka) {
+				group.Add(kq.MustNewQueue(k, handle))
+			}
 		}
+
+		group.Add(tcpinput.NewTcpInput(processor.Input.Tcp, handle))
+
 	}
 
 	group.Start()
-}
-
-func getWriterIndexerFromESConf(esConf config.ElasticSearchConf) (writer *es.Writer, indexer *es.Index) {
-	if esConf.Hosts == nil || len(esConf.Hosts) == 0 {
-		return nil, nil
-	}
-
-	client, err := elastic.NewClient(
-		elastic.SetSniff(false),
-		elastic.SetURL(esConf.Hosts...),
-		elastic.SetBasicAuth(esConf.Username, esConf.Password),
-	)
-	logx.Must(err)
-
-	writer, err = es.NewWriter(esConf)
-	logx.Must(err)
-
-	var loc *time.Location
-	if len(esConf.TimeZone) > 0 {
-		loc, err = time.LoadLocation(esConf.TimeZone)
-		logx.Must(err)
-	} else {
-		loc = time.Local
-	}
-	indexer = es.NewIndex(client, esConf.Index, loc)
-
-	return writer, indexer
 }
