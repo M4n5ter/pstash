@@ -5,6 +5,7 @@
 目前支持的 Input 有：
 * Kafka
 * Tcp
+* [NATS](https://nats.io/)
 
 目前支持的 Output 有：
 * ElasticSearch
@@ -13,5 +14,5 @@
 ## RoadMap
 * [x] 支持 ZincObserve Output
 * [x] 支持 Tcp Input
-* [ ] 支持更多的 Input，比如 [NATS](https://nats.io/)
+* [x] 支持更多的 Input，比如 [NATS](https://nats.io/)
 * [ ] 剥离 go-zero 相关依赖
