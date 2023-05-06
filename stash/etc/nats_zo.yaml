@@ -1,0 +1,44 @@
+Clusters:
+  - Input:
+      Nats:
+        Urls:
+            - nats://127.0.0.1:4222
+        EnableJetStream: true
+        Subject: "test-log"
+        NeedAck: true
+    Filters:
+      - Action: drop
+        Conditions:
+          - Key: k8s_container_name
+            Value: "-rpc"
+            Type: contains
+          - Key: level
+            Value: info
+            Type: match
+            Op: and
+      - Action: remove_field
+        Fields:
+          - message
+          - _source
+          - _type
+          - _score
+          - _id
+          - "@version"
+          - topic
+          - index
+          - beat
+          - docker_container
+          - offset
+          - prospector
+          - source
+          - stream
+      - Action: transfer
+        Field: message
+        Target: data
+    Output:
+      ZincObserve:
+        Schema: http
+        Host: 127.0.0.1
+        Port: 5080
+        Username: admin@m4n5ter.email
+        Password: "123456"
