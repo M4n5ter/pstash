@@ -78,8 +78,9 @@ type (
 		Subject            string `json:",default=log"`
 		QueueSubscribeName string `json:",optional"`
 		NeedAck            bool   `json:",default=false,options=true|false"`
-		//TODO:support TLS connection
-		//TODO:support reconnection in https://docs.nats.io/using-nats/developer/connecting/reconnect
+		TlsCertPath        string `json:",optional"`
+		TlsKeyPath         string `json:",optional"`
+		TlsCaPath          string `json:",optional"`
 	}
 
 	TcpInputConf struct {

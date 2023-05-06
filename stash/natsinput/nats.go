@@ -51,6 +51,7 @@ func NewNats(c config.NatsConf, handler ConsumeHandler) *Nats {
 	n.queueSubscribeName = c.QueueSubscribeName
 	n.subject = c.Subject
 	n.exit = make(chan struct{})
+
 	return n
 }
 
@@ -69,6 +70,14 @@ func NewNatsConnection(c config.NatsConf) (*nats.Conn, error) {
 	// if auth type is not none, auth content must not be empty
 	if c.AuthType != authTypeNone && c.AuthContent == "" {
 		return nil, EmptyAuthContentError
+	}
+
+	// TLS
+	if c.TlsKeyPath != "" && c.TlsCertPath != "" {
+		if c.TlsCaPath != "" {
+			opts = append(opts, nats.RootCAs(c.TlsCaPath))
+		}
+		opts = append(opts, nats.ClientCert(c.TlsCertPath, c.TlsKeyPath))
 	}
 
 	switch c.AuthType {
