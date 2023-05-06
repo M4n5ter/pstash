@@ -59,6 +59,29 @@ type (
 		Password   string `json:",optional"`
 	}
 
+	NatsConf struct {
+		Urls []string
+		// 连接的名字，推荐使用，默认为 Pstash
+		ConnectionName string `json:",default=Pstash"`
+		// 认证类型: Password/Token/NKey/Credentials
+		AuthType string `json:",default=none,options=|none|password|token|nkey|creds"`
+		// 认证内容:
+		// password 	-> Password like : <USER>@<PASSWORD>  admin@$2a$11$qbtrnb0mSG2eV55xoyPqHOZx/lLBlryHRhU3LK2oOPFRwGF/5rtGK
+		// token    	-> <YOUR TOKEN>
+		// nkey			-> <YOUR NKey Seed File Path>
+		// creds		-> <YOUR Credentials File Path>
+		// See docs in https://docs.nats.io/using-nats/developer/connecting/userpass ,
+		// https://docs.nats.io/running-a-nats-service/configuration/securing_nats/auth_intro/nkey_auth ,
+		// https://docs.nats.io/using-nats/developer/connecting/creds
+		AuthContent        string `json:",optional"`
+		EnableJetStream    bool   `json:",default=false,options=true|false"`
+		Subject            string `json:",default=log"`
+		QueueSubscribeName string `json:",optional"`
+		NeedAck            bool   `json:",default=false,options=true|false"`
+		//TODO:support TLS connection
+		//TODO:support reconnection in https://docs.nats.io/using-nats/developer/connecting/reconnect
+	}
+
 	TcpInputConf struct {
 		IP   string `json:",default=0.0.0.0"`
 		Port int    `json:",default=17171"`
@@ -69,6 +92,7 @@ type (
 	Cluster struct {
 		Input struct {
 			Kafka KafkaConf    `json:",optional"`
+			Nats  NatsConf     `json:",optional"`
 			Tcp   TcpInputConf `json:",optional"`
 		}
 		Filters []Filter `json:",optional"`

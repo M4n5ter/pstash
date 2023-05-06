@@ -6,6 +6,7 @@ import (
 	"github.com/m4n5ter/pstash/stash/es"
 	"github.com/m4n5ter/pstash/stash/filter"
 	"github.com/m4n5ter/pstash/stash/handler"
+	"github.com/m4n5ter/pstash/stash/natsinput"
 	"github.com/m4n5ter/pstash/stash/tcpinput"
 	"github.com/m4n5ter/pstash/stash/zo"
 	"github.com/zeromicro/go-queue/kq"
@@ -52,25 +53,33 @@ func main() {
 	defer group.Stop()
 
 	for _, processor := range c.Clusters {
+		// OUTPUT
 		ew, indexer := es.GetWriterIndexerFromESConf(processor.Output.ElasticSearch)
 		zw := zo.NewWriter(processor.Output.ZincObserve)
+		// must have at least one output
 		if ew == nil && zw == nil {
 			panic("no output")
 		}
 
+		// FILTER
 		filters := filter.CreateFilters(processor)
-		handle := handler.NewHandler(&handler.Writer{ESWriter: ew, ZOWriter: zw}, indexer)
-		handle.AddFilters(filters...)
-		handle.AddFilters(filter.AddUriFieldFilter("url", "uri"))
+		hdl := handler.NewHandler(&handler.Writer{ESWriter: ew, ZOWriter: zw}, indexer)
+		hdl.AddFilters(filters...)
+		hdl.AddFilters(filter.AddUriFieldFilter("url", "uri"))
 
-		if processor.Input.Kafka.Brokers != nil {
+		// INPUT
+		// must have at least one input
+		if processor.Input.Nats.Urls == nil && processor.Input.Kafka.Brokers == nil && processor.Input.Tcp.IP == "" {
+			panic("no input")
+		} else if processor.Input.Nats.Urls != nil {
+			group.Add(natsinput.NewNats(processor.Input.Nats, hdl))
+		} else if processor.Input.Tcp.IP != "" {
+			group.Add(tcpinput.NewTcpInput(processor.Input.Tcp, hdl))
+		} else if processor.Input.Kafka.Brokers != nil {
 			for _, k := range toKqConf(processor.Input.Kafka) {
-				group.Add(kq.MustNewQueue(k, handle))
+				group.Add(kq.MustNewQueue(k, hdl))
 			}
 		}
-
-		group.Add(tcpinput.NewTcpInput(processor.Input.Tcp, handle))
-
 	}
 
 	group.Start()
