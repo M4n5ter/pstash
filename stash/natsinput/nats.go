@@ -129,9 +129,9 @@ func (n *Nats) start() {
 }
 
 func (n *Nats) stop() {
+	close(n.exit)
 	_ = n.subscription.Drain()
 	_ = n.conn.Drain()
-	close(n.exit)
 }
 
 func (n *Nats) getSubscription() {
@@ -163,6 +163,10 @@ func (n *Nats) getSubscription() {
 }
 
 func (n *Nats) consume() {
+	//TODO: 这里无论在消费的时候是否出错，都响应了 ack
+	// 但是应该处理一下错误，比如消息格式错误，可以直接响应ack（相当于丢弃了错误格式的消息）
+	// 但是如果是其他错误，比如消费者处理消息的时候出错了，或者网络问题（不是消息本身的问题），那么就不能响应ack，这样消息就会一直在队列中
+	// 当然如果没用使用 JetStream，那么消息只能看到一次，相当于不论是什么错误，一定会丢失消息
 	msg, _ := n.subscription.NextMsgWithContext(context.Background())
 	err := n.handler.Consume("", bytes2string(&msg.Data))
 	if err != nil {
