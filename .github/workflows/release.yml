@@ -30,7 +30,7 @@ jobs:
             goos: darwin
     steps:
     - uses: actions/checkout@v3
-    - uses: zeromicro/go-zero-release-action@master
+    - uses: wangyoucao577/go-release-action@v1.38
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         goos: ${{ matrix.goos }}
