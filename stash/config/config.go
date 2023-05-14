@@ -64,7 +64,7 @@ type (
 		// 连接的名字，推荐使用，默认为 Pstash
 		ConnectionName string `json:",default=Pstash"`
 		// 认证类型: Password/Token/NKey/Credentials
-		AuthType string `json:",default=none,options=|none|password|token|nkey|creds"`
+		AuthType string `json:",default=none,options=none|password|token|nkey|creds"`
 		// 认证内容:
 		// password 	-> Password like : <USER>@<PASSWORD>  admin@$2a$11$qbtrnb0mSG2eV55xoyPqHOZx/lLBlryHRhU3LK2oOPFRwGF/5rtGK
 		// token    	-> <YOUR TOKEN>

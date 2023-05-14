@@ -27,7 +27,7 @@ Nats:
       - nats://127.0.0.1:4222 #required
       - nats://1.1.1.1:4222
   ConnectionName: "pstash" # optional, default is Pstash
-  AuthType: "none" # default=none,options=|none|password|token|nkey|creds"
+  AuthType: "none" # default=none,options=none|password|token|nkey|creds"
   AuthContent: "auth.txt" # optional
   EnableJetStream: true
   Subject: "test-log"
