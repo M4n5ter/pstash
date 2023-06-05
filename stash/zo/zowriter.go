@@ -3,11 +3,13 @@ package zo
 import (
 	"encoding/base64"
 	"fmt"
-	json "github.com/json-iterator/go"
-	"github.com/m4n5ter/pstash/stash/config"
 	"io"
 	"net/http"
 	"strings"
+
+	json "github.com/json-iterator/go"
+
+	"github.com/m4n5ter/pstash/stash/config"
 )
 
 type Writer struct {

@@ -3,10 +3,11 @@ package es
 import (
 	"context"
 
-	"github.com/m4n5ter/pstash/stash/config"
 	"github.com/olivere/elastic/v7"
 	"github.com/zeromicro/go-zero/core/executors"
 	"github.com/zeromicro/go-zero/core/logx"
+
+	"github.com/m4n5ter/pstash/stash/config"
 )
 
 type (

@@ -1,10 +1,12 @@
 package handler
 
 import (
+	"unsafe"
+
 	json "github.com/json-iterator/go"
+
 	"github.com/m4n5ter/pstash/stash/es"
 	"github.com/m4n5ter/pstash/stash/filter"
-	"unsafe"
 )
 
 type MessageHandler struct {

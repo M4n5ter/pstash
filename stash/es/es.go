@@ -1,10 +1,12 @@
 package es
 
 import (
-	"github.com/m4n5ter/pstash/stash/config"
+	"time"
+
 	"github.com/olivere/elastic/v7"
 	"github.com/zeromicro/go-zero/core/logx"
-	"time"
+
+	"github.com/m4n5ter/pstash/stash/config"
 )
 
 func GetWriterIndexerFromESConf(esConf config.ElasticSearchConf) (writer *Writer, indexer *Index) {

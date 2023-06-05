@@ -2,16 +2,14 @@ package natsinput
 
 import (
 	"context"
-	"github.com/m4n5ter/pstash/stash/config"
-
-	// 标准库
 	"errors"
 	"fmt"
 	"strings"
 	"unsafe"
 
-	// 第三方库
 	"github.com/nats-io/nats.go"
+
+	"github.com/m4n5ter/pstash/stash/config"
 )
 
 var (

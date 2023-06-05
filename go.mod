@@ -4,6 +4,7 @@ go 1.20
 
 require (
 	github.com/json-iterator/go v1.1.12
+	github.com/nats-io/nats.go v1.25.0
 	github.com/olivere/elastic/v7 v7.0.32
 	github.com/stretchr/testify v1.8.2
 	github.com/vjeantet/jodaTime v1.0.0
@@ -24,14 +25,14 @@ require (
 	github.com/google/pprof v0.0.0-20211214055906-6f57359322fd // indirect
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.15.0 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
-	github.com/klauspost/compress v1.15.15 // indirect
+	github.com/klauspost/compress v1.16.5 // indirect
 	github.com/mailru/easyjson v0.7.7 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.17 // indirect
 	github.com/matttproud/golang_protobuf_extensions v1.0.4 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
-	github.com/nats-io/nats.go v1.25.0 // indirect
+	github.com/nats-io/nats-server/v2 v2.9.17 // indirect
 	github.com/nats-io/nkeys v0.4.4 // indirect
 	github.com/nats-io/nuid v1.0.1 // indirect
 	github.com/openzipkin/zipkin-go v0.4.1 // indirect

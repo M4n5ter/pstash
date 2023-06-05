@@ -2,6 +2,13 @@ package main
 
 import (
 	"flag"
+
+	"github.com/zeromicro/go-queue/kq"
+	"github.com/zeromicro/go-zero/core/conf"
+	"github.com/zeromicro/go-zero/core/logx"
+	"github.com/zeromicro/go-zero/core/proc"
+	"github.com/zeromicro/go-zero/core/service"
+
 	"github.com/m4n5ter/pstash/stash/config"
 	"github.com/m4n5ter/pstash/stash/es"
 	"github.com/m4n5ter/pstash/stash/filter"
@@ -9,11 +16,6 @@ import (
 	"github.com/m4n5ter/pstash/stash/natsinput"
 	"github.com/m4n5ter/pstash/stash/tcpinput"
 	"github.com/m4n5ter/pstash/stash/zo"
-	"github.com/zeromicro/go-queue/kq"
-	"github.com/zeromicro/go-zero/core/conf"
-	"github.com/zeromicro/go-zero/core/logx"
-	"github.com/zeromicro/go-zero/core/proc"
-	"github.com/zeromicro/go-zero/core/service"
 )
 
 var configFile = flag.String("f", "etc/config.yaml", "Specify the config file")

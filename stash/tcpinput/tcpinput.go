@@ -2,12 +2,14 @@ package tcpinput
 
 import (
 	"bufio"
-	"github.com/m4n5ter/pstash/stash/config"
-	"github.com/m4n5ter/pstash/stash/handler"
-	"github.com/zeromicro/go-zero/core/logx"
 	"net"
 	"strconv"
 	"time"
+
+	"github.com/zeromicro/go-zero/core/logx"
+
+	"github.com/m4n5ter/pstash/stash/config"
+	"github.com/m4n5ter/pstash/stash/handler"
 )
 
 type TcpInput struct {
