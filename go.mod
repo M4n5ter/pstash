@@ -4,7 +4,7 @@ go 1.20
 
 require (
 	github.com/json-iterator/go v1.1.12
-	github.com/nats-io/nats.go v1.25.0
+	github.com/nats-io/nats.go v1.28.0
 	github.com/olivere/elastic/v7 v7.0.32
 	github.com/stretchr/testify v1.8.2
 	github.com/vjeantet/jodaTime v1.0.0
